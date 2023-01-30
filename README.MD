@@ -1,3 +1,53 @@
+
+Instalação do jenkins
+https://phoenixnap.com/kb/install-jenkins-ubuntu
+
+
+Criar ec2 t2-micro
+
+Criar ip elastico
+Associar ip elastico
+Liberar no firewall a rede de saída e entrada
+
+  Configurar ferramentas de Configuração
+
+  Jdk  NOME: JDK11 
+        JAVA_HOME: /usr/lib/jvm/java-11-openjdk-amd64
+  Maven instalar ultima
+
+Instalar docker
+https://cloudcone.com/docs/article/how-to-install-docker-on-ubuntu-22-04-20-04/
+sudo chmod 777 /var/run/docker.soc
+
+
+Nexus
+https://www.howtoforge.com/how-to-install-nexus-repository-manager-on-ubuntu-22-04/
+
+
+https://download.sonatype.com/nexus/3/nexus-3.45.1-01-unix.tar.gz
+
+
+Sonar
+https://www.fosstechnix.com/how-to-install-sonarqube-on-ubuntu-22-04-lts/
+
+7a2118a2ff9b18a4bff6f27fe51dcd2f41f19d8f
+
+
+mvn sonar:sonar -Dsonar.projectKey=carros-api -Dsonar.host.url=http://44.211.102.32:9000 -Dsonar.login=7a2118a2ff9b18a4bff6f27fe51dcd2f41f19d8f
+
+
+
+mvn sonar:sonar \
+  -Dsonar.projectKey=carros-api \
+  -Dsonar.host.url=http://44.211.102.32:9000 \
+  -Dsonar.login=7a2118a2ff9b18a4bff6f27fe51dcd2f41f19d8f
+
+
+/etc/sysctl.conf and set vm.max_map_count to 262144.
+
+
+
+
 #Exercícios Infra Agil AWS
 
 Jenkins

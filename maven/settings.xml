@@ -15,8 +15,8 @@
      <servers>
         <server>
             <id>maven-releases</id>
-            <username>admin</username>
-            <password>admin</password>
+            <username>{usuario admin do nexus que vc criou}</username>
+            <password>{senha}</password>
         </server>
     </servers>
 </settings>

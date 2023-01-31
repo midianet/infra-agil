@@ -7,7 +7,7 @@
      <mirror>
         <id>central</id>
         <name>central</name>
-           <url>http://3.216.19.186:8081/repository/maven-public/</url>
+           <url>http://{endereço externo do seu nexus incluindo a porta}/repository/maven-public/</url>
            <mirrorOf>*</mirrorOf>
         </mirror>
      </mirrors>

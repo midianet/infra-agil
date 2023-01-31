@@ -1,0 +1,182 @@
+<html>
+    <head>
+        <title>Infraestrutura Ágil</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+        <link rel="stylesheet" href="style.css">            
+    </head>
+    <body class="container">
+        <div class="navbar">
+            <p class="titulo">Infraestrutura Ágil (AWS)</p>
+        </div>
+        <div class="sidenav">
+            <a href="./index.html">Início</a>
+            <a href="./jenkins.html">Jenkins</a>
+            <p class="current">Sonar</p>
+            <a href="./nexus.html">Nexus</a>
+            <a href="./criptografia.html">Criptografia</a>
+            <a href="./controller-etcd.html">ETCD</a>
+            <a href="./controller-plane.html">Controllers</a>
+            <a href="./worker.html">Workers</a>
+            <a href="./kubectl.html">Kubectl</a>
+            <a href="./rotas.html">Rotas</a>
+            <a href="./dns.html">DNS</a>
+            <a href="./teste.html">Teste</a>
+            <a href="./dashboard.html">Dashboard</a>
+            <a href="./destruir.html">Destruir</a>
+        </div>
+        <div class="main">
+            <h1>Sonar</h1>
+            <p class="intro">Execute os passos abaixo para configuração do Sonar</p>
+            <h4>Criando a máquina</h4>
+            <p><span>Nome:</span> Sonar</br>
+              <span>Máquina SO</span>: Ubuntu Server 22.04 LTS amd64</br>
+              <span>Máquina Type:</span> T2 Small</p>
+            <img src="img/maquina-criar.png" alt="" class="image-aws" />
+            <h4>Instância</h4>
+            <p>Logo em seguida aguarde a instância ficar disponível</p>
+            <img src="img/maquina-instancia.png" class="image-aws" alt\=""/>
+            <h4>Criar IP</h4>
+            <p>Precisamos criar um IP Elástico (Externo)<br>
+                Conforme a imagem abaixo clique no menu Rede e Segurança -> Ip´s Elasticos</br>
+                clique em <span>Alocar endereço IP elástico</span></p>
+            <img src="img/ipelastico.png" alt="" class="image-aws" />
+            <p>Depois clique em <span>Alocar</span></p>
+            <img src="img/ipelastico-alocar.png" alt="" class="image-aws" />
+            <p>verifique o ip atribuido</p>
+            <img src="img/ipelastico-alocado.png" alt="" class="image-aws" />
+            <h4>Associar IP</h4>
+            <p>Agora precisamos associar esse IP a  instância do Sonar</p>
+            <img src="img/ipelastico-associar.png" alt="" class="image-aws" />
+            <p>Escolha a instância do Sonar na lista de Instâncias e clique em <span>Associar</span></p>
+            <img src="img/ipelastico-associar-maquina.png" alt="" class="image-aws" />
+            <h4>Regras de Segurança</h4>
+            <p>Para acessar as regras de segurança acessse o menu Rede e Segurança -> Grupo </p>
+             <p>Então vá no menu Rede e Segurança -> e selecione o grupo de segurança designado para a instância do Sonar</p>
+            <p>no menu Ações selecione Editar Regras de Entrada</p>
+            <img src="img/regraseguranca-acao.png" alt="" class="image-aws" />
+            <p>Precisamos liberar as portas do Sonar por se tratar de apenas um exercício vamos liberar todas as portas, mas se atente em liberar em produção apenas as portas necessárias.</p>
+            <p>Então para isso Troque o valor da regra de entrada para aceitar todas as entradas conforme abaixo e clique em <span>Salvar Regras</span></p>
+            <img src="img/regraseguranca-entrada-all.png"  alt="" class="image-aws" />
+            <h4>Acessando a instância</h4>
+            <p>Selecione a instância do Sonar clique em <span>Conectar</span></p>
+            <img src="img/maquina-conectar.png" alt="" class="image-aws" />
+            <p>Informe o usuário no campo como root</br>
+            depois clique em <span>Conectar</span></p>
+            <img src="img/maquina-conetar-usuario.png" alt="" class="image-aws"/>
+            <h4>Instalando o Sonar</h4>
+            <div class="code">
+                <pre>
+#Configurando Limites
+  sysctl -w vm.max_map_count=524288
+  sysctl -w fs.file-max=131072
+  ulimit -n 131072
+  ulimit -u 8192
+  vim /etc/security/limits.conf
+  #no final do arquivo antes da linha #End of file adicione as linhas abaixo
+  sonarqube        -       nofile          65536
+  sonarqube        -       noproc          4096
+  #salve o arquivo
+  vim /etc/sysctl.conf
+     #no final do arquivo adiciona a linha abaixo
+     vm.max_map_count=262144
+
+#Instalando Unzip
+  apt update
+  apt install wget unzip -y
+#Instalando Java  
+  apt install openjdk-11-jdk -y
+  java -version
+  #
+ #Instalando Postgres 
+  sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" >> /etc/apt/sources.list.d/pgdg.list'
+  wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O - | sudo apt-key add -
+  apt install -y postgresql postgresql-contrib
+  systemctl start postgresql
+  systemctl enable postgresql
+ #Criando usuario,banco e suas permissoes 
+  sudo passwd postgres  #informe a senha postgres , mas lembre em muda-la em ambiente produtivo
+  su - postgres
+  createuser sonar * ver
+  psql
+  ALTER USER sonar WITH ENCRYPTED password 'sonar';
+  CREATE DATABASE sonarqube OWNER sonar;
+  grant all privileges on DATABASE sonarqube to sonar;
+  exit
+ #Instalando o sonar 
+  cd /tmp
+  sudo wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-8.9.9.56886.zip
+  unzip sonarqube-8.9.9.56886.zip -d /opt
+  mv /opt/sonarqube-8.9.9.56886 /opt/sonarqube
+#Criando Grupo Sonar e adicionando o usuario sonar  
+  groupadd sonar
+  useradd -c "user to run SonarQube" -d /opt/sonarqube -g sonar sonar
+#Dando permissao a pasta /opt/sonarqube
+  chown sonar:sonar /opt/sonarqube -R
+#Editando as configurações do Banco  
+  vim /opt/sonarqube/conf/sonar.properties
+  # procure as linhas não esqueça de descomentar o #
+     #sonar.jdbc.username= e substitua por sonar.jdbc.username=sonar
+     #sonar.jdbc.password= e substitua por sonar.jdbc.password=sonar
+     #sonar.jdbc.url=jdbc:postgresql://localhost/sonarqube?currentSchema=my_schema e substitua por sonar.jdbc.url=jdbc:postgresql://localhost:5432/sonarqube
+  #Salve o arquivo
+#Editando o arquivo e execução do Sonar
+  vim /opt/sonarqube/bin/linux-x86-64/sonar.sh
+  # procure a linha com #RUN_AS_USER= e substitua por RUN_AS_USER=sonar
+  #Salve o arquivo
+#Executando o sonar
+  su sonar
+  cd /opt/sonarqube/bin/linux-x86-64/
+  ./sonar.sh start
+  # deverá aparecer 
+     Starting SonarQube
+     Starde SonarQube
+#Verificando execução
+  ./sonar.sh status   
+  # deverá aparecer
+    SonarQube is running
+  ./sonar.sh stop
+  exit
+  vim /etc/systemd/system/sonar.service
+  #preencha o arquivo com o conteúdo abaixo:
+ 
+  [Unit]
+  Description=SonarQube service
+  After=syslog.target network.target
+  
+  [Service]
+  Type=forking
+  
+  ExecStart=/opt/sonarqube/bin/linux-x86-64/sonar.sh start
+  ExecStop=/opt/sonarqube/bin/linux-x86-64/sonar.sh stop
+  
+  User=sonar
+  Group=sonar
+  Restart=always
+  
+  LimitNOFILE=65536
+  LimitNPROC=4096
+  
+  [Install]
+  WantedBy=multi-user.target
+
+#Iniciando o serviço
+  systemctl start sonar
+  systemctl enable sonar
+  systemctl status sonar
+  exit
+              </pre>
+            </div>
+            <h4>Acessando o Sonar</h4>            
+            <p>Pelo IP apresentado na instância do SonarQube como abaixo</p>
+            <img src="img/maquina-ipelastico.png" alt="" class="image-aws"/>
+            <p>Acesse no seu browser o endereço<br>
+            <span>http://{ip da instancia}:9000</span><br>
+            Então informe o usuario : admin</br>
+            E a senha: admin</br>
+            O sistema irá pedir pra trocar a senha, troque para sonar</p>
+            <p>Pronto por enquanto finalizamos as configurações do Sonar</p>
+        </div>
+    </body>
+</html>

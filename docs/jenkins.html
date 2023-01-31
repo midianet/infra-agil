@@ -1,0 +1,148 @@
+<html>
+    <head>
+        <title>Infraestrutura Ágil</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+        <link rel="stylesheet" href="style.css">            
+    </head>
+    <body class="container">
+        <div class="navbar">
+            <p class="titulo">Infraestrutura Ágil (AWS)</p>
+        </div>
+        <div class="sidenav">
+            <a href="./index.html">Início</a>
+            <p class="current">Jenkins</p>
+            <a href="./sonar.html">Sonar</a>
+            <a href="./nexus.html">Nexus</a>
+            <a href="./criptografia.html">Criptografia</a>
+            <a href="./controller-etcd.html">ETCD</a>
+            <a href="./controller-plane.html">Controllers</a>
+            <a href="./worker.html">Workers</a>
+            <a href="./kubectl.html">Kubectl</a>
+            <a href="./rotas.html">Rotas</a>
+            <a href="./dns.html">DNS</a>
+            <a href="./teste.html">Teste</a>
+            <a href="./dashboard.html">Dashboard</a>
+            <a href="./destruir.html">Destruir</a>
+        </div>
+        <div class="main">
+            <h1>Jenkins</h1>
+            <p class="intro">Execute os passos abaixo para configuração do Jenkins</p>
+            <h4>Criando a máquina</h4>
+            <p><span>Nome:</span> Jenkins</br>
+              <span>Máquina SO</span>: Ubuntu Server 22.04 LTS amd64</br>
+              <span>Máquina Type:</span> T2 Small</p>
+            <img src="img/maquina-criar.png" alt="" class="image-aws" />
+            <h4>Instância</h4>
+            <p>Logo em seguida aguarde a instância ficar disponível</p>
+            <img src="img/maquina-instancia.png" class="image-aws" alt\=""/>
+            <h4>Criar IP</h4>
+            <p>Precisamos criar um IP Elástico (Externo)<br>
+                Conforme a imagem abaixo clique no menu Rede e Segurança -> Ip´s Elasticos</br>
+                clique em <span>Alocar endereço IP elástico</span></p>
+            <img src="img/ipelastico.png" alt="" class="image-aws" />
+            <p>Depois clique em <span>Alocar</span></p>
+            <img src="img/ipelastico-alocar.png" alt="" class="image-aws" />
+            <p>verifique o ip atribuido</p>
+            <img src="img/ipelastico-alocado.png" alt="" class="image-aws" />
+            <h4>Associar IP</h4>
+            <p>Agora precisamos associar esse IP a  instância do Jenkins</p>
+            <img src="img/ipelastico-associar.png" alt="" class="image-aws" />
+            <p>Escolha a instância do Jenkins na lista de Instâncias e clique em <span>Associar</span></p>
+            <img src="img/ipelastico-associar-maquina.png" alt="" class="image-aws" />
+            <h4>Regras de Segurança</h4>
+            <p>Para acessar as regras de segurança acessse o menu Rede e Segurança -> Grupo </p>
+             <p>Então vá no menu Rede e Segurança -> e selecione o grupo de segurança designado para a instância do Jenkins</p>
+            <p>no menu Ações selecione Editar Regras de Entrada</p>
+            <img src="img/regraseguranca-acao.png" alt="" class="image-aws" />
+            <p>Precisamos liberar as portas do jenkins por se tratar de apenas um exercício vamos liberar todas as portas, mas se atente em liberar apenas as portas necessárias.</p>
+            <p>Então para isso Troque o valor da regra de entrada para aceitar todas as entradas conforme abaixo e clique em <span>Salvar Regras</span></p>
+            <img src="img/regraseguranca-entrada-all.png"  alt="" class="image-aws" />
+            <h4>Acessando a instância</h4>
+            <p>Selecione a instância do Jenkins clique em <span>Conectar</span></p>
+            <img src="img/maquina-conectar.png" alt="" class="image-aws" />
+            <p>Informe o usuário no campo como root</br>
+            depois clique em <span>Conectar</span></p>
+            <img src="img/maquina-conetar-usuario.png" alt="" class="image-aws"/>
+            <h4>Instalando o Jenkins</h4>
+            <div class="code">
+                <pre>
+#Instalando JDK
+  apt update
+  apt install openjdk-11-jdk
+  java -version
+#Add repositório Jenkins
+  curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+  echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+#Instalando Jenkins
+  apt update
+  apt install jenkins -y
+#Habilitar serviço Jenkins  
+  systemctl enable --now jenkins
+  systemctl status jenkins
+#Liberar a porta do Jenkins
+  ufw allow 8080
+#Instalar Docker 
+  apt install apt-transport-https curl gnupg-agent ca-certificates software-properties-common -y
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+  apt install docker-ce docker-ce-cli containerd.io -y
+  chmod 777 /var/run/docker.sock
+  docker ps
+#Visualizar token de instalação do Jenkins  
+  cat /var/lib/jenkins/secrets/initialAdminPassword
+  #copie o token para um arquivo iremos usalo logo adiante
+                </pre>
+            </div>
+            <h4>Acessando o Jenkins</h4>            
+            <p>Pelo IP apresentado na instância como abaixo</p>
+            <img src="img/maquina-ipelastico.png" alt="" class="image-aws"/>
+            <p>Acesse no seu browser o endereço<br>
+            <span>http://{ip da instancia}:8080</span><br>
+            Então informe o token previamente copiado</p>
+            <img src="img/jenkins-token.png" alt="" class="image-aws"/>
+            <h4>Escolhendo modo de Instalação</h4>
+            <p>Escolha a opção "Select plugins to install</p>
+            <img src="img/jenkins-plugins-mode.png" alt="" class="image-aws"/>
+            <h4>Instalando Plugins</h4>
+            <p>Selecione na lista o plugin SSH Agent</p>
+            <img src="img/jenkins-plugins-install.png" alt="" class="image-aws"/>
+            <p>Depois clique em <span>Install</span></p>
+            <img src="img/jenkins-plugins-install-button.png" alt="" class="image-aws"/>
+            <p>Aguarde o fim da instalação</p>
+            <img src="img/jenkins-plugins-installing.png" alt="" class="image-aws"/>
+            <h4>Criando Usuário Admin</h4>
+            <p>Para facilitar informe o usuário como: admin</br>
+            Informe uma senha (não esqueça essa senha)</br>
+            Informe o nome como Administrador</br>
+            Informe um email</p>
+            <h4>Url Jenkins</h4>
+            <p>Como não temos um domínio registrado vamos por ip mesmo então informe o endereço do jenkins como</br>
+            http://{ip da instância}:8080/</p>
+            <img  src="img/jenkins-url.png" alt="" class="image-aws"/>
+            <p>Finalizamos a instalação</p>
+            <img  src="img/jenkins-finalinstall.png" alt="" class="image-aws"/>
+            <p>Clique em <span>Start using Jenkins</span></p>
+            <h4>Configurando Ferramentas</h4>
+            <p>No Menu do Jenkins </br>
+            Acesse Painel de Controle -> Gerenciar Jenkins</p>
+            <img src="img/jenkins-gerenciar.png" alt="" class="image-aws"/>
+            <p>Clique em Ferramenta de configuração global</p>
+            <h4>Configurando JDK</h4>
+            <p>Procure o texto JDK e clique em JDK Instalações</p>
+            <img src="img/jenkins-jdk-add.png" alt="" class="image-aws"/>
+            <p>Desmarque a opção Instalar automaticamente</br>
+            No campo Nome informe exatamente jdk-11</br>
+            No campo JAVA_HOME informe exatamente /usr/lib/jvm/java-11-openjdk-amd64</p>
+            <img src="img/jenkins-jdk-path.png" alt="" class="image-aws"/>
+            <h4>Configurando o Maven</h4>
+            <p>Procure abaixo o Texto Maven e clique em <span>Adicionar Maven</span></br>
+            Selecione a opção Instalar automaticamente(tem que ficar marcado)</br>
+            No campo Nome informe exatamente M3</br>
+            No campo versão escolha 3.8.7</p>
+            <img src="img/jenkins-maven-add.png" alt="" class="image-aws"/>
+            <p>Pronto por enquanto finalizamos as configurações do Jenkins</p>
+        </div>
+    </body>
+</html>

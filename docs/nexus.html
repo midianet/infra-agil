@@ -1,0 +1,161 @@
+<html>
+    <head>
+        <title>Infraestrutura Ágil</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+        <link rel="stylesheet" href="style.css">            
+    </head>
+    <body class="container">
+        <div class="navbar">
+            <p class="titulo">Infraestrutura Ágil (AWS)</p>
+        </div>
+        <div class="sidenav">
+            <a href="./index.html">Início</a>
+            <a href="./jenkins.html">Jenkins</a>
+            <a href="./sonar.html">Sonar</a>
+            <p class="current">Nexus</p>
+            <a href="./configuracao.html">Configuração</a>
+            <a href="./criptografia.html">Criptografia</a>
+            <a href="./controller-etcd.html">ETCD</a>
+            <a href="./controller-plane.html">Controllers</a>
+            <a href="./worker.html">Workers</a>
+            <a href="./kubectl.html">Kubectl</a>
+            <a href="./rotas.html">Rotas</a>
+            <a href="./dns.html">DNS</a>
+            <a href="./teste.html">Teste</a>
+            <a href="./dashboard.html">Dashboard</a>
+            <a href="./destruir.html">Destruir</a>
+        </div>
+        <div class="main">
+            <h1>Nexus</h1>
+            <p class="intro">Execute os passos abaixo para configuração do Nexus</p>
+            <h4>Criando a máquina</h4>
+            <p><span>Nome:</span> Nexus</br>
+              <span>Máquina SO</span>: Ubuntu Server 22.04 LTS amd64</br>
+              <span>Máquina Type:</span> T2 Small</p>
+            <img src="img/maquina-criar.png" alt="" class="image-aws" />
+            <h4>Instância</h4>
+            <p>Logo em seguida aguarde a instância ficar disponível</p>
+            <img src="img/maquina-instancia.png" class="image-aws" alt\=""/>
+            <h4>Criar IP</h4>
+            <p>Precisamos criar um IP Elástico (Externo)<br>
+                Conforme a imagem abaixo clique no menu Rede e Segurança -> Ip´s Elasticos</br>
+                clique em <span>Alocar endereço IP elástico</span></p>
+            <img src="img/ipelastico.png" alt="" class="image-aws" />
+            <p>Depois clique em <span>Alocar</span></p>
+            <img src="img/ipelastico-alocar.png" alt="" class="image-aws" />
+            <p>verifique o ip atribuido</p>
+            <img src="img/ipelastico-alocado.png" alt="" class="image-aws" />
+            <h4>Associar IP</h4>
+            <p>Agora precisamos associar esse IP a  instância do Nexus</p>
+            <img src="img/ipelastico-associar.png" alt="" class="image-aws" />
+            <p>Escolha a instância do Nexus na lista de Instâncias e clique em <span>Associar</span></p>
+            <img src="img/ipelastico-associar-maquina.png" alt="" class="image-aws" />
+            <h4>Regras de Segurança</h4>
+            <p>Para acessar as regras de segurança acessse o menu Rede e Segurança -> Grupo </p>
+             <p>Então vá no menu Rede e Segurança -> e selecione o grupo de segurança designado para a instância do Nexus</p>
+            <p>no menu Ações selecione Editar Regras de Entrada</p>
+            <img src="img/regraseguranca-acao.png" alt="" class="image-aws" />
+            <p>Precisamos liberar as portas do Nexus por se tratar de apenas um exercício vamos liberar todas as portas, mas se atente em liberar em produção apenas as portas necessárias.</p>
+            <p>Então para isso Troque o valor da regra de entrada para aceitar todas as entradas conforme abaixo e clique em <span>Salvar Regras</span></p>
+            <img src="img/regraseguranca-entrada-all.png"  alt="" class="image-aws" />
+            <h4>Acessando a instância</h4>
+            <p>Selecione a instância do Nexus clique em <span>Conectar</span></p>
+            <img src="img/maquina-conectar.png" alt="" class="image-aws" />
+            <p>Informe o usuário no campo como root</br>
+            depois clique em <span>Conectar</span></p>
+            <img src="img/maquina-conetar-usuario.png" alt="" class="image-aws"/>
+            <h4>Instalando o Nexus</h4>
+            <div class="code">
+                <pre>
+
+#Instalando o Java
+apt update
+apt install -y openjdk-8-jdk
+java -verison
+#Adicionando o usuario  
+useradd -d /opt/nexus -s /bin/bash nexus
+passwd nexus
+  #coloque a senha nexus
+  #repita a senha nexus
+#Configurando limites  
+ulimit -n 65536
+vim /etc/security/limits.d/nexus.conf
+  #coloque o valor abaixo
+    nexus - nofile 65536
+  #salve o arquivo
+  ulimit -a
+  #deve ter a linha com o valor -> open files                          (-n) 65536
+#Baixando o nexus  
+  wget https://download.sonatype.com/nexus/3/nexus-3.41.1-01-unix.tar.gz
+#Descompactando o nexus  
+  tar xzf nexus-3.41.1-01-unix.tar.gz
+#Movendo as pastas
+  mv nexus-3.41.1-01 /opt/nexus  
+  mv sonatype-work /opt/
+#Configurando o nexus
+  vim /opt/nexus/bin/nexus.rc
+    #substitua o valor #run_as_user="" para run_as_user="nexus"
+    #salve o arquivo
+  vim /opt/nexus/bin/nexus.vmoptions
+    #altere os valores abaixo
+     #na linha  -Xms2703m mude para -Xms1024m
+     #na linha  -Xmx2703m mude para -Xmx1024m
+     #na linha -XX:MaxDirectMemorySize=2703m mude para  -XX:MaxDirectMemorySize=1024m
+    #salve o arquivo 
+  cd /opt/sonatype-work/nexus3
+  mkdir etc
+  cd etc
+  vim nexus.properties
+    #informe o valor abaixo
+      application-host=0.0.0.0
+    #salve o arquivo
+  vim /etc/systemd/system/nexus.service
+    #adicione as linhas abaixo
+
+    [Unit]
+    Description=nexus service
+    After=network.target
+    
+    [Service]
+    Type=forking
+    LimitNOFILE=65536
+    ExecStart=/opt/nexus/bin/nexus start
+    ExecStop=/opt/nexus/bin/nexus stop
+    User=nexus
+    Restart=on-abort
+    
+    [Install]
+    WantedBy=multi-user.target
+
+   #salve o arquivo
+#Atribuindo permissao ao usuario nexus
+   chown -R nexus:nexus /opt/nexus /opt/sonatype-work     
+#Iniciando o servico
+  systemctl daemon-reload
+  systemctl start nexus
+  systemctl enable nexus
+  systemctl status nexus
+  cat /opt/sonatype-work/nexus3/admin.password
+    #copie o valor para informar no login
+  exit
+  </pre>
+            </div>
+            <h4>Acessando o Nexus</h4>            
+            <p>Pelo IP apresentado na instância do Nexus como abaixo</p>
+            <img src="img/maquina-ipelastico.png" alt="" class="image-aws"/>
+            <p>Acesse no seu browser o endereço<br>
+            <span>http://{ip da instancia}:8081</span><br>
+            Então entre na opção sign in</br>
+            Informe o usuairo : admin</br>
+            e a senha que vc copiou do arquivo admin.password</p>
+            <img src="/img/nexus-config.png" alt="" class="image-aws"/>
+            <p>Informe uma nova senha admin</p>
+            <img src="img/nexus-password.png" alt="" class="image-aws"/>
+            <p>por enquando deixe o acesso como anônimo</p>
+            <img src="img/nexus-anonymous.png" alt="" class="image-aws"/>
+            <p>Pronto por enquanto finalizamos as configurações do Nexus</p>
+        </div>
+    </body>
+</html>

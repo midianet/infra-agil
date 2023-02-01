@@ -1,0 +1,85 @@
+<html>
+    <head>
+        <title>Infraestrutura Ágil</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+        <link rel="stylesheet" href="style.css">            
+    </head>
+    <body class="container">
+        <div class="navbar">
+            <p class="titulo">Infraestrutura Ágil (AWS)</p>
+        </div>
+        <div class="sidenav">
+            <a href="./index.html">Início</a>
+            <a href="./jenkins.html">Jenkins</a>
+            <a href="./sonar">Sonar</a>
+            <a href="./nexus.html">Nexus</a>
+            <p class="current">Aplicação</p>
+            <a href="./adicionais.html">Configurações</a>
+        </div>
+        <div class="main">
+            <h1>Carros API</h1>
+            <p class="intro">Execute os passos abaixo para configuração da API</p>
+            <h4>Criando novo par de chaves</h4>
+            <p>Precisamos criar um novo par de chaves para essa instância pois iremos usa-la para o deploy</br>
+             Acesse o menu Rede e Segurança -> Pares de chaves</p>
+             <img src="img/chave-menu.png" alt="" class="image-aws"/>
+             <p>Informe o nome do par carros-api, Execute <span>Criar par de chaves</span></p>
+             <img src="img/chave-criar.png" alt="" class="image-aws"/>
+             <p>O download do arquivo carros.pem será realizado</p>
+            <h4>Criando a máquina</h4>
+            <p><span>Nome:</span> carros-api</br>
+              <span>Máquina SO</span>: Ubuntu Server 22.04 LTS amd64</br>
+              <span>Máquina Type:</span> T2 Small
+              <span>Atenção na criação da imagem no menu Nome do par de chaves escolha carros-api</span></p>
+            <img src="img/chave-escolha.png" alt=""  class="image-aws"/>
+            <img src="img/maquina-criar.png" alt="" class="image-aws" />
+            <h4>Instância</h4>
+            <p>Logo em seguida aguarde a instância ficar disponível</p>
+            <img src="img/maquina-instancia.png" class="image-aws" alt="" class="image-aws"/>
+            <h4>Criar IP</h4>
+            <p>Precisamos criar um IP Elástico (Externo)<br>
+                Conforme a imagem abaixo clique no menu Rede e Segurança -> Ip´s Elasticos</br>
+                clique em <span>Alocar endereço IP elástico</span></p>
+            <img src="img/ipelastico.png" alt="" class="image-aws" />
+            <p>Depois clique em <span>Alocar</span></p>
+            <img src="img/ipelastico-alocar.png" alt="" class="image-aws" />
+            <p>verifique o ip atribuido</p>
+            <img src="img/ipelastico-alocado.png" alt="" class="image-aws" />
+            <h4>Associar IP</h4>
+            <p>Agora precisamos associar esse IP a  instância da API</p>
+            <img src="img/ipelastico-associar.png" alt="" class="image-aws" />
+            <p>Escolha a instância carros-api na lista de Instâncias e clique em <span>Associar</span></p>
+            <img src="img/ipelastico-associar-maquina.png" alt="" class="image-aws" />
+            <h4>Regras de Segurança</h4>
+            <p>Para acessar as regras de segurança acessse o menu Rede e Segurança -> Grupo </p>
+             <p>Então vá no menu Rede e Segurança -> e selecione o grupo de segurança designado para a instância da API</p>
+            <p>no menu Ações selecione Editar Regras de Entrada</p>
+            <img src="img/regraseguranca-acao.png" alt="" class="image-aws" />
+            <p>Precisamos liberar as portas da API, por se tratar de apenas um exercício vamos liberar todas as portas, mas se atente em liberar em produção apenas as portas necessárias.</p>
+            <p>Então para isso Troque o valor da regra de entrada para aceitar todas as entradas conforme abaixo e clique em <span>Salvar Regras</span></p>
+            <img src="img/regraseguranca-entrada-all.png"  alt="" class="image-aws" />
+            <h4>Acessando a instância</h4>
+            <p>Selecione a instância carros-api clique em <span>Conectar</span></p>
+            <img src="img/maquina-conectar.png" alt="" class="image-aws" />
+            <p>Informe o usuário no campo como root</br>
+            depois clique em <span>Conectar</span></p>
+            <img src="img/maquina-conetar-usuario.png" alt="" class="image-aws"/>
+            <h4>Instações necessárias</h4>
+            <div class="code">
+                <pre>
+#Instalar Docker 
+  apt install apt-transport-https curl gnupg-agent ca-certificates software-properties-common -y
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+  apt install docker-ce docker-ce-cli containerd.io -y
+  docker ps
+  usermod -aG docker ubuntu
+  exit
+              </pre>
+            </div>
+            <p>Para testar logue novamente na maquina com o usuário ubuntu  e execute o comando docker ps</p>
+        </div>
+    </body>
+</html>

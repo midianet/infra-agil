@@ -1,0 +1,68 @@
+<html>
+    <head>
+        <title>Infraestrutura Ágil</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+        <link rel="stylesheet" href="style.css">            
+    </head>
+    <body class="container">
+        <div class="navbar">
+            <p class="titulo">Infraestrutura Ágil (AWS)</p>
+        </div>
+        <div class="sidenav">
+            <a href="./index.html">Início</a>
+            <a href="./jenkins.html">Jenkins</a>
+            <a href="./sonar.html">Sonar</a>
+            <a href="./nexus.html">Nexus</a>
+            <a href="./aplicacao.html">Aplicação</a>
+            <p class="current">Configurações</p>
+        </div>
+        <div class="main">
+          <h1>Configurações Adicionais</h1>
+          <h4>Jenkins</h4>
+          <p class="intro">Apontando o Nexus</p>
+          <p>Precisamos apontar o maven para o nexus, como o modelo do arquivo <a class="link-blank" href="https://github.com/midianet/infra-agil/blob/main/maven/settings.xml" target="_blank">settings.xml</a> ,não se esqueça de trocar os valores personalizados da sua instalação </p>
+          <div class="code">
+            <pre>
+#Configurando settings.xml do maven
+cd /var/lib/jenkins
+su jenkins
+mkdir .m2
+cd .m2
+vim settings.xml
+  #cole o conteúdo do link acima settings.xml substituindo os valores 
+  #salve o arquivo
+            </pre>
+          </div>
+          <h4>Instalando Plugins adicionais no Jenkins</h4>
+          <p>precisamos instalar alguns plugins e configurar algumas variáveis no jenkins</br>
+            Acesse o Jenkins e logue no sistema como admin</br>
+            Acesse o menu Painel de Controle -> Gerenciar Jenkins -> Gerenciador de Extensões</p>
+          <img src="img/jenkins-plugins-add-extras.png" alt="" class="image-aws" />
+          <p>Marque os Plugins para instalação</br>
+          <span>Pipeline Utiliti Steps</span></br>
+          <span>SSH Agent Plugin</span></br></p>
+          <img src="img/jenkins-plugin-pipeline.png" alt="" class="image-aws"/>
+          <p>Clique no botão <span>Instalar sem reinicar</span></p>
+          <img src="img/jenkins-plugins-flag.png" alt="" class="image-aws"/>
+          <p>Apos a instalação Marque a opção abaixo</p>
+          <img src="img/jenkins-plugins-restart.png" alt="" class="image-aws"/>
+          <p>Aguarde o reinicio</br>
+          Novamente no ar acesse o menu Painel de Controle -> Gerenciar Jenkins -> Credentials</br>
+          Clique em <span>Sistem</span></p>
+          <img src="img/jenkins-credential-system.png" alt="" class="image-aws"/>
+          <p>Clique em Global Credentiasl</p>
+          <img src="img/jenkins-credential-global.png" alt="" class="image-aws"/>
+          <p>Clique no Botão <span>Add Credential</span></p>
+          <img src="img/jenkins-credential-add.png" alt="" class="image-aws"/> 
+          <p>Escolha a opção na lista SSH Username with private key</p>
+          <p>Prencha conforme abaixo</p>
+          <img src="img/jenkins-credential-ssh.png" alt="" class="image-aws"/> 
+          <p>depois no campo Key clique em <span>Adicionar</span></p>
+          <p>Abra o arquivo carros-api.pem e cole o conteudo no campo Key</p>
+          <img src="img/jenkins-credential-key.png" alt="" class="image-aws"/> 
+          <p>Finalize com o botão <span>Create</span></p>
+        </div>
+    </body>
+</html>

@@ -15,6 +15,8 @@
             <p class="current">Jenkins</p>
             <a href="./sonar.html">Sonar</a>
             <a href="./nexus.html">Nexus</a>
+            <a href="./aplicacao.html">Aplicação</a>
+            <a href="./adicionais.html">Configurações</a>
         </div>
         <div class="main">
             <h1>Jenkins</h1>
@@ -60,7 +62,7 @@
                 <pre>
 #Instalando JDK
   apt update
-  apt install openjdk-11-jdk
+  apt install -y openjdk-11-jdk
   java -version
 #Add repositório Jenkins
   curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
@@ -82,7 +84,7 @@
   docker ps
 #Visualizar token de instalação do Jenkins  
   cat /var/lib/jenkins/secrets/initialAdminPassword
-  #copie o token para um arquivo iremos usalo logo adiante
+  #copie o token em algum lugar para uso log adiante
                 </pre>
             </div>
             <h4>Acessando o Jenkins</h4>            

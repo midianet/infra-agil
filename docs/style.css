@@ -142,6 +142,16 @@ html {
     color:black;
   }
   
+  .link-blank {
+    color: #2d127e;
+    text-decoration: none;
+  }
+
+  .link-blank a:hover {
+    color: #4c20cd;
+  }
+
+
   .sidenav a {
     padding: 6px 8px 6px 16px;
     text-decoration: none;

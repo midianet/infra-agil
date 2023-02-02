@@ -19,47 +19,69 @@
             <a href="./adicionais.html">Configurações</a>
         </div>
         <div class="main">
-            <h1>Jenkins</h1>
-            <p class="intro">Execute os passos abaixo para configuração do Jenkins</p>
-            <h4>Criando a máquina</h4>
-            <p><span>Nome:</span> Jenkins</br>
-              <span>Máquina SO</span>: Ubuntu Server 22.04 LTS amd64</br>
-              <span>Máquina Type:</span> T2 Small</p>
-            <img src="img/maquina-criar.png" alt="" class="image-aws" />
-            <h4>Instância</h4>
-            <p>Logo em seguida aguarde a instância ficar disponível</p>
-            <img src="img/maquina-instancia.png" class="image-aws" alt\=""/>
-            <h4>Criar IP</h4>
-            <p>Precisamos criar um IP Elástico (Externo)<br>
-                Conforme a imagem abaixo clique no menu Rede e Segurança -> Ip´s Elasticos</br>
-                clique em <span>Alocar endereço IP elástico</span></p>
-            <img src="img/ipelastico.png" alt="" class="image-aws" />
-            <p>Depois clique em <span>Alocar</span></p>
-            <img src="img/ipelastico-alocar.png" alt="" class="image-aws" />
-            <p>verifique o ip atribuido</p>
-            <img src="img/ipelastico-alocado.png" alt="" class="image-aws" />
-            <h4>Associar IP</h4>
-            <p>Agora precisamos associar esse IP a  instância do Jenkins</p>
-            <img src="img/ipelastico-associar.png" alt="" class="image-aws" />
-            <p>Escolha a instância do Jenkins na lista de Instâncias e clique em <span>Associar</span></p>
-            <img src="img/ipelastico-associar-maquina.png" alt="" class="image-aws" />
-            <h4>Regras de Segurança</h4>
-            <p>Para acessar as regras de segurança acessse o menu Rede e Segurança -> Grupo </p>
-             <p>Então vá no menu Rede e Segurança -> e selecione o grupo de segurança designado para a instância do Jenkins</p>
-            <p>no menu Ações selecione Editar Regras de Entrada</p>
-            <img src="img/regraseguranca-acao.png" alt="" class="image-aws" />
-            <p>Precisamos liberar as portas do jenkins por se tratar de apenas um exercício vamos liberar todas as portas, mas se atente em liberar apenas as portas necessárias.</p>
-            <p>Então para isso Troque o valor da regra de entrada para aceitar todas as entradas conforme abaixo e clique em <span>Salvar Regras</span></p>
-            <img src="img/regraseguranca-entrada-all.png"  alt="" class="image-aws" />
-            <h4>Acessando a instância</h4>
-            <p>Selecione a instância do Jenkins clique em <span>Conectar</span></p>
-            <img src="img/maquina-conectar.png" alt="" class="image-aws" />
-            <p>Informe o usuário no campo como root</br>
-            depois clique em <span>Conectar</span></p>
-            <img src="img/maquina-conetar-usuario.png" alt="" class="image-aws"/>
-            <h4>Instalando o Jenkins</h4>
+            <h1>jenkins</h1>
+            <p class="aviso">Execute os passos abaixo para configuração do Jenkins</p>
+            <div class ="bloco">
+              <span class="topico">Criando Par de Chaves</span>
+              Antes de começar vamos criar um novo par de chaves para o exercício porque iremos usa-lo para acesso SSH, caso
+              tenha um previamente criado e queria usa-lo fique a vontade, mas certifique que você possui a chave .pem desse
+              certificado poderá pular essa fase e ir pra criação da máquina acesse o menu:</br>
+              <span class="menu-acesso">Rede e Segurança -> Pares de chaves</span>, informe um nome, clique: <span class="acao">Criar par de chaves</span>
+              <img src="img/chave-criar.jpg" alt="" class="image-aws" width="500"/></br>
+              O arquivo <span class="important">{nome do par de chaves}.pem</span> será disponibilizado</br>
+            </div>
+            <div class ="bloco">
+              <span class="topico">Criando a Instância</span>
+                Para criar uma instância vá no painel EC2 na opção <span class="menu-acesso">Instâncias -> Instâncias</span> e escolha a opção:
+                <span class="acao">Executar Instâncias</span></br>
+                Os parâmetros usados serão:</br></br>
+                <span class="important">Nome:</span> Jenkins</br>
+                <span class="important">Máquina SO</span>: Ubuntu Server 22.04 LTS amd64</br>
+                <span class="important">Máquina Type:</span> T2 Medium</br>
+                <span class="important">Disco:</span> 50GB</br>
+                <img src="img/maquina-criar.jpg" alt="" class="image-aws" />
+            </div>
+            <div class="bloco">
+              <span class="topico">Instância</span>
+              Logo em seguida aguarde a instância ficar disponível
+              <img src="img/maquina-instancia.jpg" width="377" class="image-aws" alt=""/>
+            </div>
+            <div class="bloco">
+              <span class ="topico">Criar IP Elástico</span>
+              Agora precisamos criar um IP Elástico para acesso "Externo", acesse o menu <span class="menu-acesso">Rede e Segurança -> Ips Elasticos</span>
+              conforme a imagem abaixo, clique no menu depois em <span class="acao">Alocar endereço IP elástico</span>.</br>
+              Dica: Quando alocar coloque o nome do ip elastico com o mesmo nome da instância criada para facilitar localização.</br>
+              <img src="img/ipelastico.jpg" alt="" class="image-aws" width="500" />
+            </div>
+            <div class="bloco">
+              <span class="topico">Associar IP Elástico</span>
+              Precisamos associar esse IP a instância previamente criada, para isso então clique sobre o ip que acabou de criar,
+              então será apresentado uma tela com as informações do ip, clique em <span class="acao">Associar endereço IP elástico</span>.</br>
+              Na nova tela, <span class="menu-acesso" >Tipo de recurso</span> selecione Instância, então abaixo no campo <span class="menu-acesso" >Instância</span> selecione a instância previamente
+              criada, Depois clique em <span class="acao">Associar</span>
+              <img src="img/ipelastico-associar-maquina.jpg" alt="" class="image-aws"  width="500"/>
+            </div>
+            <div class="bloco">
+              <span class="topico">Regras de Segurança</span>
+              Para acessar a Instância criada, precisamos liberar as entradas de porta então acesse o menu: </br>
+              <span class="menu-acesso">Rede e Segurança -> Security groups</span>.</br>
+              Aproveite e renomeie o nome do grupo de segurança para o nome da instância criada previamente e depois 
+              selecione a regra, no menu superior <span class="acao">Ações</span> selecione: <span class="menu-acesso">Editar regras de entrada</span>
+              <img src="img/regraseguranca-acao.jpg" alt="" class="image-aws" width="500" /></br>
+              Nas regras de entrada vamos liberar todas as portas, mas em produção se atente em liberar apenas as portas
+              necessárias, mude o campo <span class="menu-acesso">Tipo</span> para <span class="menu-acesso">Todo o Tráfego</span> conforme abaixo e clique em: <span class="action" >Salvar Regras</span>.
+              <img src="img/regraseguranca-entrada-all.jpg"  alt="" width="500" class="image-aws" />
+            </div>
+            <div class="bloco">
+              <span class="topico">Acessando a instância</span>
+              Caso você queira acessar o <span class = "menu-acesso">Shell</span> da máquina pelo browser, selecione a instância criada previamente clique em <span class="acao" >Conectar</span>, 
+              na nova tela informe o usuário <span class="menu-acesso" >root</span>, depois clique em: <span class="acao">Conectar.</span></br>
+              <img src="img/maquina-conetar-usuario.jpg" alt="" class="image-aws" width="400"/>
+              Caso queira poderá usar o <span class="menu-acesso">CLI da AWS</span> ou um cliente SSH instalado local na sua estação.
+            </div>  
             <div class="code">
-                <pre>
+              <span class="topico">Instalando o Jenkins</span>
+              <pre>
 #Instalando JDK
   apt update
   apt install -y openjdk-11-jdk
@@ -84,57 +106,62 @@
   docker ps
 #Visualizar token de instalação do Jenkins  
   cat /var/lib/jenkins/secrets/initialAdminPassword
-  #copie o token em algum lugar para uso log adiante
-                </pre>
-            </div>
-            <h4>Acessando o Jenkins</h4>            
-            <p>Pelo IP apresentado na instância como abaixo</p>
-            <img src="img/maquina-ipelastico.png" alt="" class="image-aws"/>
-            <p>Acesse no seu browser o endereço<br>
-            <span>http://{ip da instancia}:8080</span><br>
-            Então informe o token previamente copiado</p>
-            <img src="img/jenkins-token.png" alt="" class="image-aws"/>
-            <h4>Escolhendo modo de Instalação</h4>
-            <p>Escolha a opção "Select plugins to install</p>
-            <img src="img/jenkins-plugins-mode.png" alt="" class="image-aws"/>
-            <h4>Instalando Plugins</h4>
-            <p>Selecione na lista o plugin SSH Agent</p>
-            <img src="img/jenkins-plugins-install.png" alt="" class="image-aws"/>
-            <p>Depois clique em <span>Install</span></p>
-            <img src="img/jenkins-plugins-install-button.png" alt="" class="image-aws"/>
-            <p>Aguarde o fim da instalação</p>
-            <img src="img/jenkins-plugins-installing.png" alt="" class="image-aws"/>
-            <h4>Criando Usuário Admin</h4>
-            <p>Para facilitar informe o usuário como: admin</br>
-            Informe uma senha (não esqueça essa senha)</br>
-            Informe o nome como Administrador</br>
-            Informe um email</p>
-            <h4>Url Jenkins</h4>
-            <p>Como não temos um domínio registrado vamos por ip mesmo então informe o endereço do jenkins como</br>
-            http://{ip da instância}:8080/</p>
-            <img  src="img/jenkins-url.png" alt="" class="image-aws"/>
-            <p>Finalizamos a instalação</p>
-            <img  src="img/jenkins-finalinstall.png" alt="" class="image-aws"/>
-            <p>Clique em <span>Start using Jenkins</span></p>
-            <h4>Configurando Ferramentas</h4>
-            <p>No Menu do Jenkins </br>
-            Acesse Painel de Controle -> Gerenciar Jenkins</p>
-            <img src="img/jenkins-gerenciar.png" alt="" class="image-aws"/>
-            <p>Clique em Ferramenta de configuração global</p>
-            <h4>Configurando JDK</h4>
-            <p>Procure o texto JDK e clique em JDK Instalações</p>
-            <img src="img/jenkins-jdk-add.png" alt="" class="image-aws"/>
-            <p>Desmarque a opção Instalar automaticamente</br>
-            No campo Nome informe exatamente jdk-11</br>
-            No campo JAVA_HOME informe exatamente /usr/lib/jvm/java-11-openjdk-amd64</p>
-            <img src="img/jenkins-jdk-path.png" alt="" class="image-aws"/>
-            <h4>Configurando o Maven</h4>
-            <p>Procure abaixo o Texto Maven e clique em <span>Adicionar Maven</span></br>
-            Selecione a opção Instalar automaticamente(tem que ficar marcado)</br>
-            No campo Nome informe exatamente M3</br>
-            No campo versão escolha 3.8.7</p>
-            <img src="img/jenkins-maven-add.png" alt="" class="image-aws"/>
-            <p>Pronto por enquanto finalizamos as configurações do Jenkins</p>
+  #copie o token para uso logo adiante
+          </pre>
+        </div>
+          <div class="bloco">
+            <span class="topico">Acessando a Instância</span>
+            Pelo IP Elastico da Instância acesse no seu browser o endereço: <span class="menu-acesso">http://{ip elastico da instancia}:8080</span>
+            <img src="img/maquina-ipelastico.jpg" alt="" width = "500" class="image-aws"/>
+            Ao acessar o Jenkis irá pedir o token previamente copiado, informe no campo Senha do Adminstrador
+            <img src="img/jenkins-token.jpg" width="400" alt="" class="image-aws"/>
+          </div>
+          <div class="bloco">
+            <span class="topico">Escolhendo modo de Instalação</span>
+            Escolha a opção "Select plugins to install
+            <img src="img/jenkins-plugins-mode.jpg" alt="" class="image-aws" width="300"/>
+          </div>
+          <div class="bloco">
+            <span class="topico">Instalando Plugins</span>
+            Selecione na lista o plugin <span class="menu-aceso">SSH Agent</span>, Depois clique em <span class="acao">Install</span>
+            <img src="img/jenkins-plugins-install.jpg" alt="" class="image-aws" width="400"/>
+            Aguarde o fim da instalação
+            <img src="img/jenkins-plugins-installing.jpg" alt="" class="image-aws" width="400"/>
+          </div>
+          <div class="bloco">
+            <span class="topico">Criando Usuário Admin</span>
+            Informe o Nome de usuário como: <span class="menu-acesso">admin</span>.</br>
+            Crie uma senha <span class="menu-acesso">(não esqueça essa senha)</span>.</br>
+            Informe o Nome completo como: <span class="menu-acesso">Administrador</span>.</br>
+            No campo email informe seu email <span class="menu-acesso">vai receber emails de notificação</span>
+            <img src="img/jenkins-createadmin.jpg" alt="" width="400" class="image-aws" />
+          </div>
+          <div class="bloco">
+            <span class="topico">Url Jenkins</span>
+            <p>
+              Como não temos um domínio registrado vamos por ip mesmo então informe o endereço do jenkins como:</br>
+              <span class="menu-acesso">http://{ip da instância}:8080/</span>
+              <img src="img/jenkins-url.jpg" alt="" class="image-aws" width="400"/>
+              Finalizamos a instalação
+              <img src="img/jenkins-finalinstall.jpg" alt="" class="image-aws" width="300"/>
+            </p>
+          </div>
+          <div class="bloco">
+            <span class="topico">Configurando Ferramentas</span>
+            No Menu do Jenkins acesse: <span class="menu-acesso">Painel de Controle -> Gerenciar Jenkins -> Ferramentas de Configuração global</span>
+            <img src="img/jenkins-gerenciar.jpg" alt="" class="image-aws" width="500"/>
+          </div>
+          <div class="bloco">
+            <span class="topico">Configurando JDK</span>
+            Procure o texto JDK e clique em JDK <span class="action">JDK Instalações</span> e preencha conforme a figura abaixo</br>
+            <img src="img/jenkins-jdk-path.jpg" alt="" class="image-aws" width="200"/>
+          </div>
+          <div class="bloco">
+            <span class="topico">Configurando o Maven</span>
+            Procure abaixo o Texto Maven e clique em <span>Adicionar Maven</span> selecione a opção Instalar automaticamente(tem que
+            ficar marcado) e preencha conforme a imagem abaixo:
+            <img src="img/jenkins-maven-add.jpg" alt="" class="image-aws" width="200"/>
+            Por enquanto finalizamos as configurações do Jenkins.
         </div>
     </body>
 </html>

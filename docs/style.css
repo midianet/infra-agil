@@ -1,11 +1,13 @@
 html {
     min-height: 100vh;
-    font-family: "Lato", sans-serif
+    font-family: "Lato", sans-serif;
+    font-size: 12px;
   }
   
   .container{
-    max-width: 800px;
+   
   }
+
   .navbar {
     overflow: hidden;
     background-color: black;
@@ -30,6 +32,21 @@ html {
     padding: 6px 8px 6px 16px;
     margin: 0 0 0 0;
   }
+
+  .acao {
+    background-color: tomato;
+    padding: 1px 5px 2px 5px;
+    border: solid black 1px;
+    color: white;
+    font-size: 9px;
+  }
+
+  .menu-acesso {
+    font-size: 9px;
+    font-weight: bold;
+    background-color: rgb(238, 238, 243);
+    padding: 1px 4px 1px 4px;
+  }
   
   .sidenav {
     top: 40px;
@@ -42,19 +59,36 @@ html {
     overflow-x: hidden;
   }
   
-  a{
-  color: white;
-  text-decoration: none;
-  cursor: pointer;
+  a {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
   }
   a:hover{
-  color: gray;
+    color: gray;
   }
   
   .intro{
-  font-size: 20px;
+    font-size: 20px;
   }
-  
+
+  .bloco {
+    margin-left: 20px;
+    max-width: 600;
+    text-align: left;
+  }
+
+  .topico {
+    display: block;
+    margin-bottom: 2px;
+    margin-left: 0;
+    width: 100%;
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+  }
+ 
   .main {
     margin-top: 45px;
     margin-left: 180px;
@@ -62,7 +96,18 @@ html {
     text-align: justify;
     padding-left: 10px;
   }
-  
+
+  .important {
+    color:rgb(240, 95, 97);
+    font-weight: bold;
+  }
+
+  .aviso{
+    font-size: 13px;
+    font-weight: bold;
+    color: rgb(124, 124, 132);
+  }
+
   .main .title {
     text-align: center;
     color: red;
@@ -115,12 +160,13 @@ html {
   }
   
   .code{
-    width: 100%;
     padding: 10 0 10 10;
-    background-color: rgb(195, 194, 194);
     text-align: left;
   }
-  
+
+  .code pre {
+    background-color: rgb(195, 194, 194);
+  }
   
   .code-controller{
     padding: 10 0 10 10;
@@ -165,5 +211,11 @@ html {
   }
 
   .image-aws{
-     max-width: 800px;
+    display: block;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: solid 1.5px;
+    max-width: 800px;
   }

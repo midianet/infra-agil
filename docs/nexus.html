@@ -19,48 +19,60 @@
             <a href="./adicionais.html">Configurações</a>
         </div>
         <div class="main">
-            <h1>Nexus</h1>
-            <p class="intro">Execute os passos abaixo para configuração do Nexus</p>
-            <h4>Criando a máquina</h4>
-            <p><span>Nome:</span> Nexus</br>
-              <span>Máquina SO</span>: Ubuntu Server 22.04 LTS amd64</br>
-              <span>Máquina Type:</span> T2 Small</p>
-            <img src="img/maquina-criar.png" alt="" class="image-aws" />
-            <h4>Instância</h4>
-            <p>Logo em seguida aguarde a instância ficar disponível</p>
-            <img src="img/maquina-instancia.png" class="image-aws" alt\=""/>
-            <h4>Criar IP</h4>
-            <p>Precisamos criar um IP Elástico (Externo)<br>
-                Conforme a imagem abaixo clique no menu Rede e Segurança -> Ip´s Elasticos</br>
-                clique em <span>Alocar endereço IP elástico</span></p>
-            <img src="img/ipelastico.png" alt="" class="image-aws" />
-            <p>Depois clique em <span>Alocar</span></p>
-            <img src="img/ipelastico-alocar.png" alt="" class="image-aws" />
-            <p>verifique o ip atribuido</p>
-            <img src="img/ipelastico-alocado.png" alt="" class="image-aws" />
-            <h4>Associar IP</h4>
-            <p>Agora precisamos associar esse IP a  instância do Nexus</p>
-            <img src="img/ipelastico-associar.png" alt="" class="image-aws" />
-            <p>Escolha a instância do Nexus na lista de Instâncias e clique em <span>Associar</span></p>
-            <img src="img/ipelastico-associar-maquina.png" alt="" class="image-aws" />
-            <h4>Regras de Segurança</h4>
-            <p>Para acessar as regras de segurança acessse o menu Rede e Segurança -> Grupo </p>
-             <p>Então vá no menu Rede e Segurança -> e selecione o grupo de segurança designado para a instância do Nexus</p>
-            <p>no menu Ações selecione Editar Regras de Entrada</p>
-            <img src="img/regraseguranca-acao.png" alt="" class="image-aws" />
-            <p>Precisamos liberar as portas do Nexus por se tratar de apenas um exercício vamos liberar todas as portas, mas se atente em liberar em produção apenas as portas necessárias.</p>
-            <p>Então para isso Troque o valor da regra de entrada para aceitar todas as entradas conforme abaixo e clique em <span>Salvar Regras</span></p>
-            <img src="img/regraseguranca-entrada-all.png"  alt="" class="image-aws" />
-            <h4>Acessando a instância</h4>
-            <p>Selecione a instância do Nexus clique em <span>Conectar</span></p>
-            <img src="img/maquina-conectar.png" alt="" class="image-aws" />
-            <p>Informe o usuário no campo como root</br>
-            depois clique em <span>Conectar</span></p>
-            <img src="img/maquina-conetar-usuario.png" alt="" class="image-aws"/>
-            <h4>Instalando o Nexus</h4>
-            <div class="code">
-                <pre>
-
+          <h1>Nexus</h1>
+          <p class="aviso">Execute os passos abaixo para configuração do Nexus</p>
+          <div class ="bloco">
+            <span class="topico">Criando a Instância</span>
+              Para criar uma instância vá no painel EC2 na opção <span class="menu-acesso">Instâncias -> Instâncias</span> e escolha a opção:
+              <span class="acao">Executar Instâncias</span></br>
+              Os parâmetros usados serão:</br></br>
+              <span class="important">Nome:</span> Nexus</br>
+              <span class="important">Máquina SO</span>: Ubuntu Server 22.04 LTS amd64</br>
+              <span class="important">Máquina Type:</span> T2 Small</br>
+              <span class="important">Disco:</span> 50GB</br>
+              <img src="img/maquina-criar.jpg" alt="" class="image-aws" />
+          </div>
+          <div class="bloco">
+            <span class="topico">Instância</span>
+            Logo em seguida aguarde a instância ficar disponível
+            <img src="img/maquina-instancia.jpg" width="377" class="image-aws" alt=""/>
+          </div>
+          <div class="bloco">
+            <span class ="topico">Criar IP Elástico</span>
+            Agora precisamos criar um IP Elástico para acesso "Externo", acesse o menu <span class="menu-acesso">Rede e Segurança -> Ips Elasticos</span>
+            conforme a imagem abaixo, clique no menu depois em <span class="acao">Alocar endereço IP elástico</span>.</br>
+            Dica: Quando alocar coloque o nome do ip elastico com o mesmo nome da instância criada para facilitar localização.</br>
+            <img src="img/ipelastico.jpg" alt="" class="image-aws" width="500" />
+          </div>
+          <div class="bloco">
+            <span class="topico">Associar IP Elástico</span>
+            Precisamos associar esse IP a instância previamente criada, para isso então clique sobre o ip que acabou de criar,
+            então será apresentado uma tela com as informações do ip, clique em <span class="acao">Associar endereço IP elástico</span>.</br>
+            Na nova tela, <span class="menu-acesso" >Tipo de recurso</span> selecione Instância, então abaixo no campo <span class="menu-acesso" >Instância</span> selecione a instância previamente
+            criada, Depois clique em <span class="acao">Associar</span>
+            <img src="img/ipelastico-associar-maquina.jpg" alt="" class="image-aws"  width="500"/>
+          </div>
+          <div class="bloco">
+            <span class="topico">Regras de Segurança</span>
+            Para acessar a Instância criada, precisamos liberar as entradas de porta então acesse o menu: </br>
+            <span class="menu-acesso">Rede e Segurança -> Security groups</span>.</br>
+            Aproveite e renomeie o nome do grupo de segurança para o nome da instância criada previamente e depois 
+            selecione a regra, no menu superior <span class="acao">Ações</span> selecione: <span class="menu-acesso">Editar regras de entrada</span>
+            <img src="img/regraseguranca-acao.jpg" alt="" class="image-aws" width="500" /></br>
+            Nas regras de entrada vamos liberar todas as portas, mas em produção se atente em liberar apenas as portas
+            necessárias, mude o campo <span class="menu-acesso">Tipo</span> para <span class="menu-acesso">Todo o Tráfego</span> conforme abaixo e clique em: <span class="action" >Salvar Regras</span>.
+            <img src="img/regraseguranca-entrada-all.jpg"  alt="" width="500" class="image-aws" />
+          </div>
+          <div class="bloco">
+            <span class="topico">Acessando a instância</span>
+            Caso você queira acessar o <span class = "menu-acesso">Shell</span> da máquina pelo browser, selecione a instância criada previamente clique em <span class="acao" >Conectar</span>, 
+            na nova tela informe o usuário <span class="menu-acesso" >root</span>, depois clique em: <span class="acao">Conectar.</span></br>
+            <img src="img/maquina-conetar-usuario.jpg" alt="" class="image-aws" width="400"/>
+            Caso queira poderá usar o <span class="menu-acesso">CLI da AWS</span> ou um cliente SSH instalado local na sua estação.
+          </div>
+          <div class="code">
+            <span class="topico">Instalando o Nexus</span>
+            <pre>            
 #Instalando o Java
 apt update
 apt install -y openjdk-8-jdk
@@ -131,22 +143,22 @@ vim /etc/security/limits.d/nexus.conf
   cat /opt/sonatype-work/nexus3/admin.password
     #copie o valor para informar no login
   exit
-  </pre>
-            </div>
-            <h4>Acessando o Nexus</h4>            
-            <p>Pelo IP apresentado na instância do Nexus como abaixo</p>
-            <img src="img/maquina-ipelastico.png" alt="" class="image-aws"/>
-            <p>Acesse no seu browser o endereço<br>
-            <span>http://{ip da instancia}:8081</span><br>
-            Então entre na opção sign in</br>
-            Informe o usuairo : admin</br>
-            e a senha que vc copiou do arquivo admin.password</p>
-            <img src="/img/nexus-config.png" alt="" class="image-aws"/>
-            <p>Informe uma nova senha admin</p>
-            <img src="img/nexus-password.png" alt="" class="image-aws"/>
-            <p>por enquando deixe o acesso como anônimo</p>
-            <img src="img/nexus-anonymous.png" alt="" class="image-aws"/>
-            <p>Pronto por enquanto finalizamos as configurações do Nexus</p>
+            </pre>
+          </div>
+          <div class="bloco">
+            <span class="topico">Acessando a Instância do Nexus</span>
+            Pelo IP Elastico da Instância acesse no seu browser o endereço: <span class="menu-acesso">http://{ip elastico da instancia}:8081</span>
+            <img src="img/maquina-ipelastico.jpg" alt="" width = "500" class="image-aws"/>
+            Então entre na opção Sign in</br>
+            Informe o Usuário: <span class="menu-acesso">admin</span></br>
+            Informe a Senha que vc copiou do arquivo admin.password</br>
+            O nexus irá solicitar uma nova senha para o <span class="menu-acesso">admin</span>
+            Como e primeira vez acessado O Nexus socicitará algumas configurações
+            <img src="/img/nexus-config.jpg" alt="" class="image-aws" width="300"/>
+            <img src="img/nexus-password.jpg" alt="" class="image-aws" width="300"/>
+            Por enquando vamos deixar o acesso anônimo permitido</p>
+            <img src="img/nexus-anonymous.jpg" alt="" class="image-aws" width="300"/>
+            Por enquanto finalizamos as configurações do Nexus
         </div>
     </body>
 </html>

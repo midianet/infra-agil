@@ -20,9 +20,11 @@
         </div>
         <div class="main">
           <h1>Configurações Adicionais</h1>
-          <h4>Jenkins</h4>
-          <p class="intro">Apontando o Nexus</p>
-          <p>Precisamos apontar o maven para o nexus, como o modelo do arquivo <a class="link-blank" href="https://github.com/midianet/infra-agil/blob/main/maven/settings.xml" target="_blank">settings.xml</a> ,não se esqueça de trocar os valores personalizados da sua instalação </p>
+          <h1>Jenkins</h1>
+          <div class="bloco">          
+            <span class="topico">Configurando maven</span>
+            Precisamos apontar o maven para a i instância do nexus, como o modelo do arquivo <a class="link-blank" href="https://github.com/midianet/infra-agil/blob/main/maven/settings.xml" target="_blank">settings.xml</a>, 
+            não se esqueça de trocar os valores personalizados da sua instalação
           <div class="code">
             <pre>
 #Configurando settings.xml do maven
@@ -35,34 +37,91 @@ vim settings.xml
   #salve o arquivo
             </pre>
           </div>
-          <h4>Instalando Plugins adicionais no Jenkins</h4>
-          <p>precisamos instalar alguns plugins e configurar algumas variáveis no jenkins</br>
-            Acesse o Jenkins e logue no sistema como admin</br>
-            Acesse o menu Painel de Controle -> Gerenciar Jenkins -> Gerenciador de Extensões</p>
-          <img src="img/jenkins-plugins-add-extras.png" alt="" class="image-aws" />
-          <p>Marque os Plugins para instalação</br>
-          <span>Pipeline Utiliti Steps</span></br>
-          <span>SSH Agent Plugin</span></br></p>
-          <img src="img/jenkins-plugin-pipeline.png" alt="" class="image-aws"/>
-          <p>Clique no botão <span>Instalar sem reinicar</span></p>
-          <img src="img/jenkins-plugins-flag.png" alt="" class="image-aws"/>
-          <p>Apos a instalação Marque a opção abaixo</p>
-          <img src="img/jenkins-plugins-restart.png" alt="" class="image-aws"/>
-          <p>Aguarde o reinicio</br>
-          Novamente no ar acesse o menu Painel de Controle -> Gerenciar Jenkins -> Credentials</br>
-          Clique em <span>Sistem</span></p>
-          <img src="img/jenkins-credential-system.png" alt="" class="image-aws"/>
-          <p>Clique em Global Credentiasl</p>
-          <img src="img/jenkins-credential-global.png" alt="" class="image-aws"/>
-          <p>Clique no Botão <span>Add Credential</span></p>
-          <img src="img/jenkins-credential-add.png" alt="" class="image-aws"/> 
-          <p>Escolha a opção na lista SSH Username with private key</p>
-          <p>Prencha conforme abaixo</p>
-          <img src="img/jenkins-credential-ssh.png" alt="" class="image-aws"/> 
-          <p>depois no campo Key clique em <span>Adicionar</span></p>
-          <p>Abra o arquivo carros-api.pem e cole o conteudo no campo Key</p>
-          <img src="img/jenkins-credential-key.png" alt="" class="image-aws"/> 
-          <p>Finalize com o botão <span>Create</span></p>
+          <div class="bloco">          
+            <span class="topico">Instalando Plugins adicionais no Jenkins</span>
+            Precisamos instalar alguns plugins e configurar algumas variáveis no jenkins</br>
+            Acesse o Jenkins no menu <span class="menu-acesso">Painel de Controle -> Gerenciar Jenkins -> Gerenciador de Extensões</span>
+            <img src="img/jenkins-plugins-add-extras.jpg" alt="" class="image-aws" width="350" />
+            Marque o plugin para instalação <span class="menu-acesso" >Pipeline Utility Steps</span></br>
+            Clique no botão <span class="acao">Instalar sem reinicar</span>
+            <img src="img/jenkins-plugin-pipeline.jpg" alt="" class="image-aws" width="350"/>
+            Apos a instalação Marque a opção abaixo
+            <img src="img/jenkins-plugins-restart.jpg" alt="" class="image-aws" width="300"/>
+            Aguarde o reinicio.</br>
+          </div>
+          <div class="bloco">          
+            <span class="topico">Configurações adicionais no Jenkins</span>          
+            Novamente no ar acesse o menu: <span class="menu-acesso">Painel de Controle -> Gerenciar Jenkins -> Credentials</span></br>
+            Clique em <span class="menu-acesso" >Sistem</span></p>
+          <img src="img/jenkins-credential-system.jpg" alt="" class="image-aws" width="250"/>
+          Clique em: <span class="menu-acesso">Global Credentiasl</span>
+          <img src="img/jenkins-credential-global.jpg" alt="" class="image-aws" width="300" />
+          Clique no Botão: <span class="acao" >Add Credential</span>
+          <img src="img/jenkins-credential-add.jpg" alt="" class="image-aws" width="500" /> 
+          Escolha a opção na lista <span class="menu-acesso">SSH Username with private key</span></br>
+          Prencha conforme abaixo e depois no campo Key clique em <span class="menu-acesso" >Adicionar</span>
+          <img src="img/jenkins-credential-ssh.jpg" alt="" class="image-aws" width="500"/> 
+          <p>Abra o arquivo previamente salvo carros-api.pem e cole o conteúdo no campo <span class="menu-acesso" >Key</span>
+          <img src="img/jenkins-credential-key.jpg" alt="" class="image-aws" width="400"/> 
+          Finalize mais abaixo  clicando no botão: <span class="acao">Create</span>
+        </div>
+        <div class="bloco">          
+          <span class="topico">Adicionando variáveis Globais no Jenkins</span>
+          Precisamos adcionar as variáveis globais abaixo clicando no botao: <span class="acao">Adicionar</span> uma a uma.
+          <img src="img/jenkins-variaveis-globais.jpg" alt="" class="image-aws" width="400"/> 
+          Por aqui finalizamos as configurações do ambiente adicionais, agora vamos criar o projeto de build de fato.
+        </div>
+        <div class="bloco">          
+          <span class="topico">Criando a tarefa de build do projeto Carros API</span>
+          No menu inicial do jenkins cliquem em <span class="acao">+ Novo tarefa</span></br>
+          Informe o nome do item, clique em <span class="menu-acesso">Multibranch Pipeline</span></br>
+          Depois clique em <span class="acao">Tudo Certo</span>
+          <img src="img/jenkins-carros-api-task.jpg" alt="" class="image-aws" width="350"/> 
+          Vamos informar os dados da Tarefa, começe informando o <span class="menu-acesso" >Display Name</span> como: <span class="menu-acesso" >Caros API</span></br>
+          Então vamos configurar o jenkins para acessar o repostório Github do projeto clique em: <span class="acao">Add Source</span>
+          <img src="img/jenkins-carros-task-part1.jpg" alt="" class="image-aws" width="250"/>
+          No menu escolha <span class="menu-acesso">Github</span>
+          <img src="img/jenkins-carros-task-part2.jpg" alt="" class="image-aws" width="150"/>
+          Agora precisamos persistir sua credencial do Github, clique em: <span class="acao">Add</span>
+          <img src="img/jenkins-carros-task-part3.jpg" alt="" class="image-aws" width="150"/>
+          Preencha os campos conforme a imagem abaixo depois clique em <span class="acao">Add</span>
+          <img src="img/jenkins-carros-task-part4.jpg" alt="" class="image-aws" width="300"/>
+          Voltando a tela da criação da tarefa selecione a credencial salva como na imagem abaixo
+          <img src="img/jenkins-carros-task-part5.jpg" alt="" class="image-aws" width="300"/>
+          Para finalizar  configuração do repositório informe a url do Github do projeto e cique em: <span class="acao">Validadte</span> para verificar se esta tudo certo com a configuração
+          <img src="img/jenkins-carros-task-part6.jpg" alt="" class="image-aws" width="300"/>
+          Agora vamos configurar o intervalo que o Jenkins detecta alterações no projeto, vamos usar: <span class="menu-acesso">1 minuto</span> apenas para o exercício, mas esse tempo em projetos reais devem ser melhor avaliado.
+          <img src="img/jenkins-carros-task-part7.jpg" alt="" class="image-aws" width="300"/>
+          Chegamos ao final da configuração mais abaixo clique no botão: <span class="acao">Salvar</span> e vamos aguardar a configuração inicial do projeto</br>
+          <img src="img/jenkins-carros-task-part8.jpg" alt="" class="image-aws" width="400"/>
+          Clique sobre a branch: <span class="menu-acesso">Master</span></br>
+          Então se tudo estiver certo veremos uma tela como essa:
+          <img src="img/jenkins-carros-task-part9.jpg" alt="" class="image-aws" width="600"/>
+        </div>
+        <div class="bloco">          
+          <span class="topico">Checando as eviências no Nexus</span>
+          Acessse o Nexus no endereço <span class="menu-acesso">http://{ip elastico da instancia}:8081</span> para verificar o deploy do pacote do projeto acesse no menu: <span class="menu-acesso" >Browse</span>
+          <img src="img/carros-nexus.jpg" alt="" class="image-aws" width="150"/>
+          Então selecione o repositoório <span class="menu-acesso">maven-releases</span>
+          <img src="img/carros-nexus-releases.jpg" alt="" class="image-aws" width="250"/>
+          Vemos aqui os artefatos deployados em release e seu projeto deverá estar aqui e iterado a cada versão nova.
+          <img src="img/carros-nexus-lib.jpg" alt="" class="image-aws" width="400"/>
+        </div>
+        <div class="bloco">
+          <span class="topico">Checando as eviências no Dockerhub</span>
+          Também versionamos a imagem Docker do projeto iterado a cada versão nova.
+          <img src="img/carros-dockerhub.jpg" alt="" class="image-aws" width="400"/>
+        </div>
+        <div class="bloco">
+          <span class="topico">Checando as eviências da aplicação de fato</span>
+          Acesse o endereço <span class="menu-acesso">http://{ip elastico da instancia}</span> , devemos ver algo como a imagem abaixo.
+          <img src="img/carros-app.jpg" alt="" class="image-aws" width="400"/>
+          Itere a versão no github, commite novamente e aguarde o processo todo ocorrer e cheque novamente as evidências observando a nova versão.</br>
+        </div>
+        <div class="bloco">
+          <span class="topico">Finish</span>
+          Se tudo deu certo parabéns você alcançou seu Objetivo</br>
+          Agora você tem todas as competências para <span class="important">Aplicar Agilidade na sua Infraestrutura</span>
         </div>
     </body>
 </html>

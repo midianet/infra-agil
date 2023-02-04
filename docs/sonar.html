@@ -103,11 +103,12 @@
  #Criando usuario,banco e suas permissoes 
   sudo passwd postgres  #informe a senha postgres , mas lembre em muda-la em ambiente produtivo
   su - postgres
-  createuser sonar * ver
+  createuser sonar
   psql
   ALTER USER sonar WITH ENCRYPTED password 'sonar';
   CREATE DATABASE sonarqube OWNER sonar;
   grant all privileges on DATABASE sonarqube to sonar;
+  exit
   exit
  #Instalando o sonar 
   cd /tmp

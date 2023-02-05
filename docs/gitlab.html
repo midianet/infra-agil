@@ -87,7 +87,7 @@ cd /home/ubuntu
 mkdir runners
 cd runners
 mkdir mario
-docker run --rm -it --link gitlab -v /home/ubuntu/runners/mario:/etc/gitlab-runner gitlab/gitlab-runner register
+docker run --rm -it -v /home/ubuntu/runners/mario:/etc/gitlab-runner gitlab/gitlab-runner register
 # o sistema vai pedir algumas informações:
    #Enter the Gitlab instance URL (for example, https://gitlab.com/):
       #informe: https://gitlab.com/     -> {de enter}

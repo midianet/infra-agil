@@ -1,0 +1,134 @@
+<html>
+    <head>
+        <title>Infraestrutura Ágil</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+        <link rel="stylesheet" href="style.css">            
+    </head>
+    <body class="container">
+        <div class="navbar">
+            <p class="titulo">Infraestrutura Ágil (AWS)</p>
+        </div>
+        <div class="sidenav">
+            <a href="./index.html">Início</a>
+            <a href="./jenkins.html">Jenkins</a>
+            <a href="./sonar.html">Sonar</a>
+            <a href="./nexus.html">Nexus</a>
+            <a href="./aplicacao.html">Aplicação</a>
+            <a href="./configuracao.html">Configurações</a>
+            <p class="current">Git Lab</p>
+        </div>
+        <div class="main">
+          <h1>Pipeline Gitlab Mario</h1>
+            <div class="bloco">
+                <span class="topico">Instância Carros</span>
+                Nesse exercício vamos reaproveitar a istância <span class="menu-acesso">carros-api</span>, então se vc a excluiu por favor execute novamente o passo da criação da instância <a class="link-blank" href="./aplicacao.html">carros-api</a>
+            </div>
+          <div class="bloco">
+              <span class="topico">Acessando o Gitlab</span>
+              Acesse <a class="link-blank" href="https://gitlab.com" target="_blank">gitlab.com</a>
+              <img src="img/gitlab-login.jpg" class="image-aws" alt="" width="500"/>
+              Entre com seu usuário e sua senha</br>
+              Caso não tenha um usuario no gitlab vc pode logar com a conta do github, basta clicar no botão <span class="menu-acesso">GitHub</span></br>
+              <img src="img/gitlab-login-user.jpg" class="image-aws" alt="" width="300"/>
+              Se clicou no botão <span class="menu-acesso">GitHub</span> o sistema irá pedir as suas credenciais do github, isso e legal que fica com o mesmo login nas duas plataformas
+              <img src="img/gitlab-github-login.jpg" class="image-aws" alt="" width="300"/>
+          </div>
+          <div class="bloco">
+            <span class="topico">Fork do Projeto Mario</span>
+            Vamos criar um fork do projeto Mario no seu usuário gitlab acesse: <a class="link-blank" href="https://gitlab.com/midianet/mario" target="_blank">Projeto Mario</a></br>
+            <img src="img/gitlab-mario-fork.jpg" class="image-aws" alt="" width="450"/>
+            Nessa tela informe o namespace <span class="menu-acesso">{seu usuario gitlab}</span> e clique em : <span class="acao">Frok projetc</span>
+            <img src="img/gitlab-mario-fork-create.jpg" class="image-aws" alt="" width="500"/>
+          </div>
+            <div class="bloco">
+                <span class="topico">Config CI/CD</span>
+                Vamos configurar o CI/CD então no menu lateral do projeto clique em: <span class="menu-acesso">Settings -> CI/CD</span>
+                <img src="img/gitlab-mario-cicd-menu.jpg" class="image-aws" width="250" alt=""/>
+                Procure o item <span class="menu-acesso">Variables</span> e clique em: <span class="acao">Expand</span>
+                <img src="img/gitlab-mario-variables-expand.jpg" class="image-aws" alt="" width="500">
+                Então clique em: <span class="acao">Add variable</span>
+                <img src="img/gitlab-mario-variable-add.jpg" class="image-aws" alt="" width="250"/>
+                Então prencha os dados como na imagem abaixo e clique em: <span class="acao">Add variable</span> variavel:<span class="menu-acesso">app_server</span>
+                <img src="img/gitlab-mario-app_server.jpg" class="image-aws" alt="" width="400"/>
+                Então clique novamente em <span class="acao">Add variable</span></br>
+                Preencha os dados conforme a imagem abaixo: e depois confirme em <span class="acao">Add variable</span> variavel: <span class="menu-acesso">dockerhub_user</span>
+                <img src="img/gitlab-mario-dockerhub-user.jpg" class="image-aws" alt="" width="400"/>
+                Então clique novamente em <span class="acao">Add variable</span></br>
+                Preencha os dados conforme a imagem abaixo: e depois confirme em <span class="acao">Add variable</span> variavel: <span class="menu-acesso">dockerhub_password</span>
+                <img src="img/gitlab-mario-dockerhub-passw.jpg" class="image-aws" alt="" width="400"/>
+                Preencha os dados conforme a imagem abaixo: e depois confirme em <span class="acao">Add variable</span> variavel: <span class="menu-acesso">SSH_PRIVATE_KEY</span>
+                <img src="img/gitlab-mario-ssh.jpg" class="image-aws" alt="" width="400"/>
+                Demos ficar agora com essas variáveis abaixo:
+                <img src="img/gitlab-mario-variables-all.jpg" class="image-aws" alt="" width="400">
+            </div>
+            <div class="bloco">
+                <span class="topico">Pegando o token do repositório</span>
+                Precisamos copiar o token do repositorio então no gitlab no seu repositório Mario no menu lateral do projeto clique em: <span class="menu-acesso">Settings -> CI/CD</span>
+                <img src="img/gitlab-mario-cicd-menu.jpg" class="image-aws" width="250" alt=""/>
+                Procure a palavra <span class="menu-acesso">Runners</span> clique em <span class="acao">Expand</span></br>
+                procure a parte como na imagem abaixo e clique no icone para copiar o token
+                <img src="img/gitlab-mario-token.jpg" class="image-aws" width="250" alt="">
+            </div>
+            <div class="bloco">
+                <span class="topico">Acessando a instância carros-api</span>
+                Caso você queira acessar o <span class = "menu-acesso">Shell</span> da máquina pelo browser, selecione a instância carros-api clique em <span class="acao" >Conectar</span>,
+                na nova tela informe o usuário <span class="menu-acesso" >ubuntu</span>, depois clique em: <span class="acao">Conectar.</span></br>
+                Caso queira poderá usar o <span class="menu-acesso">CLI da AWS</span> ou um cliente SSH instalado local na sua estação.
+            </div>
+            <div class="code">
+                <span class="topico">Criando do GitlabRunner</span>
+                Os comandos abaixo irão refletir as imagens abaixo:
+                <img src="img/gitlab-runner-config.jpg" class="image-aws" alt="" width="600"/>
+                <img src="img/gitlab-runner-privileged.jpg" class="image-aws" alt="" width="300"/>
+                <pre>
+cd /home/ubuntu
+mkdir runners
+cd runners
+mkdir mario
+docker run --rm -it --link gitlab -v /home/ubuntu/runners/mario:/etc/gitlab-runner gitlab/gitlab-runner register
+# o sistema vai pedir algumas informações:
+   #Enter the Gitlab instance URL (for example, https://gitlab.com/):
+      #informe: https://gitlab.com/     -> {de enter}
+   #Enter the registration token:
+      #cole o token que copiou do gitlab e cole aqui   -> {de enter}
+   #Enter a description for the runner (comma-separated):
+      #informe: mario
+   #Enter optional maintenance note for the runner:
+      #de enter
+   #Deve apresentar Registering runner... succeeded .....
+   #Enter an executor: custon, docker-ssh, shell, sh ...
+     #infome: docker -> {de enter}
+   #Enter the default Docker image (for examle, ruby>2.7):
+     #informe node   -> {de enter}
+     #Deve aparecer:
+     #Runner registered successfully. Feel free...
+     #Configuration  (with the authentication token) as saved in "/etc/gitlab-runner/config.toml"
+   sudo su
+   chown -R ubuntu /home/ubuntu/runners
+   vim /home/ubuntu/runners/mario/config.toml
+   #procure a linha com o conteúdo: privileged = false e substitua para privileged = true
+   #isso da super privilégios para o runner na instância
+   #salve o arquivo
+   docker run -d --name mario-runner --restart always  -v /home/ubuntu/runners/mario:/etc/gitlab-runner -v /var/run/docker.sock:/var/run/docker.sock gitlab/gitlab-runner
+   docker ps
+   #verifique se o container mario-runner está rodando.
+                </pre>
+            </div>
+          <div class="bloco">
+            <span class="topico">Configurando o Runner no Projeto Mario</span>
+            Por padrão o Gitlab usa runners gratuitos, mas as vezes não tem disponibilidade e precisamos esperar horas para executar nosso trabalho por isso vamos desligar os runners publicos e dizer para o Gitlab executar nosso build usando o runner que criamos
+            Acesse no menu do repositorio mario no Gitlab  <span class="menu-acesso">Settings -> CI/CD  -> Runners</span>
+            <img src="img/gitlab-runner-disable.jpg" alt="" class="image-aws" width="500" />
+            Desligue a chave: <span class="menu-acesso">Enable shared runners for this project</span></br>
+            Certifique que em Assigned project runners tenha uma bolinha verde na frente do runner</br>
+            Clique no icone do lápis e deixe a configuração como abaixo:
+            <img src="img/gitlab-runner-tag.jpg" alt="" class="image-aws" width="500" />
+          </div>
+        <div class="bloco">
+          <span class="topico">Finish</span>
+          Se tudo deu certo até aqui, aguarde instruções para criar o arquivo do pipeline [.gitlab-ci.yml]
+        </div>
+    </body>
+</html>
